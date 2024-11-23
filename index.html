@@ -1,38 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>FaucetPay Balance</title>
-<style>
-body { font-family: sans-serif; }
-#balance { font-size: 2em; margin-top: 20px; }
-</style>
+<title>Litecoin Balance</title>
 </head>
 <body>
-<h1>FaucetPay Balance</h1>
-<div id="balance">Loading...</div>
+  <h1>Litecoin Balance</h1>
+  <div id="balance">Loading...</div>
+  <script>
+    const apiKey = "b83fed8fe55c33494261dd2aa219187097f4065dbf12625ac5155c41f39e2f1b"; // **Your API Key - KEEP THIS SECRET!  Do not embed directly in client-side code in a production environment.**
+    const apiUrl = "https://faucetpay.io/api/v1/litecoin/balance"; // **Verify this endpoint**
 
-<script>
-const apiKey = "b83fed8fe55c33494261dd2aa219187097f4065dbf12625ac5155c41f39e2f1b"; // **INSECURE - DO NOT USE IN PRODUCTION**
-
-fetch('https://faucetpay.io/api/user/balance', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${apiKey}`
-  }
-})
-.then(response => response.json())
-.then(data => {
-  if (data.status === 'success') {
-    document.getElementById('balance').textContent = data.balance;
-  } else {
-    document.getElementById('balance').textContent = 'Error fetching balance: ' + data.message;
-  }
-})
-.catch(error => {
-  document.getElementById('balance').textContent = 'Error: ' + error;
-});
-</script>
-
+    fetch(apiUrl, {
+      method: 'POST', // Change to GET if needed
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}` // Or whatever FaucetPay's authorization method is
+      },
+      //body: JSON.stringify({ /* Add any required body parameters here */ }) //Only if POST requires data
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById('balance').textContent = `Your Litecoin balance: ${data.balance} LTC`;
+      } else {
+        document.getElementById('balance').textContent = `Error: ${data.message}`;
+      }
+    })
+    .catch(error => {
+      document.getElementById('balance').textContent = `Error: ${error}`;
+    });
+  </script>
 </body>
 </html>
